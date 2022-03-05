@@ -1,4 +1,5 @@
-var path = require("path");
+const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: "./src",
@@ -13,11 +14,17 @@ module.exports = {
         use: [{ loader: "babel-loader" }],
         include: path.join(__dirname, "src"),
       },
-      {
+      // We are not going to used this configuration anymore because now we don't want to inject our CSS directly into the HTML, but create a CSS file for it
+      /*{ 
         test: /\.css/,
         use: [{ loader: "style-loader" }, { loader: "css-loader" }],
         include: path.join(__dirname, "src"),
+      }, */
+      {
+        test: /\.css/,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
     ],
   },
+  plugins: [new MiniCssExtractPlugin()],
 };
